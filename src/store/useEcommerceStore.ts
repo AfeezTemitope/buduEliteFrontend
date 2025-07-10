@@ -75,7 +75,7 @@ export const useEcommerceStore = create<EcommerceState>((set, get) => ({
                 headers: { Authorization: `Bearer ${token}` },
             })
             set({ products: response.data })
-        } catch (error) {
+        } catch  {
             toast.error("Failed to load products")
         } finally {
             set({ loading: false })
@@ -113,7 +113,7 @@ export const useEcommerceStore = create<EcommerceState>((set, get) => ({
                 headers: { Authorization: `Bearer ${token}` },
             })
             set({ orders: response.data })
-        } catch (error) {
+        } catch  {
             toast.error("Failed to load orders")
         } finally {
             set({ ordersLoading: false })
@@ -218,7 +218,7 @@ export const useEcommerceStore = create<EcommerceState>((set, get) => ({
                 headers: { Authorization: `Bearer ${token}` },
             })
             set({ selectedProduct: response.data })
-        } catch (error) {
+        } catch  {
             toast.error("Failed to load product details")
         }
     },
@@ -248,7 +248,7 @@ export const useEcommerceStore = create<EcommerceState>((set, get) => ({
                 await get().fetchCart()
                 await get().fetchOrders()
             }
-        } catch (error) {
+        } catch  {
             toast.error("Failed to process checkout")
         }
     },

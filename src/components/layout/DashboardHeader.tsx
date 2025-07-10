@@ -17,8 +17,8 @@ const navigation: NavigationItem[] = [
     { name: "BEFA News", href: "/befa-news", icon: Newspaper },
     { name: "BEFA Store", href: "/befa-store", icon: Store },
     { name: "Player Spotlight", href: "/player-spotlight", icon: Trophy },
-    { name: "Live Stream (BEFA Match)", href: "/live-stream", icon: Video, comingSoon: true },
-    { name: "Top 5 Leagues Stream", href: "/top5-leagues", icon: Tv, comingSoon: true },
+    { name: "LiveStream(BEFA Match)", href: "/live-stream", icon: Video, comingSoon: true },
+    { name: "league games", href: "/top5-leagues", icon: Tv, comingSoon: true },
 ]
 
 interface DashboardHeaderProps {
