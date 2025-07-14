@@ -14,6 +14,16 @@ interface Event {
   created_at: string;
 }
 
+const BEFA = import.meta.env.VITE_BASE_URL;
+
+
+const jerseyColorMap: Record<string, string> = {
+  "BLACK": "#000000",
+  "BLUE JERSEY": "#0000FF",
+  "BLACK JERSEY": "#000000",
+  "BLUE": "#0000FF",
+};
+
 const TrainingSchedule: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +35,7 @@ const TrainingSchedule: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch('http://localhost:8000/api/schedule/events/', {
+      const response = await fetch(`${BEFA}/schedule/events/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -80,9 +90,7 @@ const TrainingSchedule: React.FC = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.1 },
     },
   };
 
@@ -91,11 +99,13 @@ const TrainingSchedule: React.FC = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
+      transition: { duration: 0.6, ease: 'easeOut' },
     },
+  };
+
+  // ✅ Utility to get mapped color
+  const getMappedColor = (label: string): string => {
+    return jerseyColorMap[label.toUpperCase().trim()] || "gray";
   };
 
   if (loading) {
@@ -167,23 +177,14 @@ const TrainingSchedule: React.FC = () => {
             <Calendar className="w-5 h-5 text-lime-400 mr-2" />
             Training Schedule
           </h2>
-          <div className="flex items-center space-x-2">
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={fetchEvents}
-                className="p-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors"
-            >
-              <RefreshCw className="w-4 h-4" />
-            </motion.button>
-            <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                className="text-2xl"
-            >
-              ⚽
-            </motion.div>
-          </div>
+          <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={fetchEvents}
+              className="p-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </motion.button>
         </motion.div>
 
         {events.length === 0 ? (
@@ -206,6 +207,7 @@ const TrainingSchedule: React.FC = () => {
               {events.map((event, index) => {
                 const dateInfo = formatDate(event.date);
                 const formattedTime = formatTime(event.time);
+                const mappedColor = getMappedColor(event.jersey_color);
 
                 return (
                     <motion.div
@@ -216,12 +218,12 @@ const TrainingSchedule: React.FC = () => {
                     >
                       <motion.div
                           className="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg"
-                          style={{ backgroundColor: event.jersey_color }}
+                          style={{ backgroundColor: mappedColor }}
                           animate={{
                             boxShadow: [
-                              `0 0 5px ${event.jersey_color}40`,
-                              `0 0 15px ${event.jersey_color}60`,
-                              `0 0 5px ${event.jersey_color}40`,
+                              `${mappedColor}40`,
+                              `${mappedColor}60`,
+                              `${mappedColor}40`,
                             ],
                           }}
                           transition={{ duration: 2, repeat: Infinity }}
@@ -233,11 +235,6 @@ const TrainingSchedule: React.FC = () => {
                             <h3 className="text-lg font-semibold text-white">{dateInfo.dayName}</h3>
                             <span className="text-sm text-gray-400">{dateInfo.dayMonth}</span>
                           </div>
-                          <div
-                              className="w-4 h-4 rounded-full border-2 border-white/20"
-                              style={{ backgroundColor: event.jersey_color }}
-                              title={`Jersey Color: ${event.jersey_color}`}
-                          />
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
@@ -249,6 +246,16 @@ const TrainingSchedule: React.FC = () => {
                             <MapPin className="w-4 h-4 text-lime-400 mr-2" />
                             {event.venue}
                           </div>
+                        </div>
+
+                        {/* Jersey Color Display */}
+                        <div className="mt-3">
+                          <span className="text-gray-400 text-sm">Jersey Color: {event.jersey_color}</span>
+                          <div
+                              className="mt-1 w-8 h-4 rounded border border-gray-600"
+                              style={{ backgroundColor: mappedColor }}
+                              title={event.jersey_color}
+                          />
                         </div>
 
                         {event.image_url && (
