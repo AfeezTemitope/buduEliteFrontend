@@ -5,8 +5,8 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
 import { useEcommerceStore } from "../store"
-import ProductCard from "../components/store/ProducCard.tsx"
-import CartDrawer from "../components/store/CardDrawer.tsx"
+import ProductCard from "../store/ProducCard.tsx"
+import CartDrawer from "../store/CardDrawer.tsx"
 
 interface BefaStoreProps {
     onNavigate: (page: string) => void

@@ -3,7 +3,7 @@
 import type React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react"
-import { useEcommerceStore } from "../../store/useEcommerceStore"
+import { useEcommerceStore } from "./useEcommerceStore.ts"
 
 interface CartDrawerProps {
     isOpen: boolean

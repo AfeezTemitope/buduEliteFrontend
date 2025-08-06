@@ -1,9 +1,7 @@
-"use client"
-
 import { useEffect } from "react"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { Toaster } from "react-hot-toast"
-import { useAuthStore } from "./store/authStore"
+import { useAuthStore } from "./store"
 import LandingPage from "./pages/LandingPage"
 import Dashboard from "./pages/Dashboard"
 
@@ -30,7 +28,7 @@ function App() {
                     toastOptions={{
                         duration: 4000,
                         style: {
-                            background: "#1f2937",
+                            background: "#1f2939",
                             color: "#ffffff",
                             border: "1px solid #374151",
                         },

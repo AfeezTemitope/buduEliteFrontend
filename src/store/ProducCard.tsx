@@ -1,7 +1,7 @@
 import type React from "react"
 import { motion } from "framer-motion"
 import { ShoppingCart, Star } from "lucide-react"
-import { useEcommerceStore } from "../../store"
+import { useEcommerceStore } from "./index.ts"
 import toast from "react-hot-toast"
 
 interface Product {
