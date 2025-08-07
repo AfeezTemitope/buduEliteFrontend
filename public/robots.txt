@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://buduelite.netlify.app/sitemap.xml
