@@ -69,16 +69,6 @@ const Dashboard: React.FC = () => {
                                 <TrainingSchedule />
                                 <BefaNews />
                             </div>
-
-                            {/* Coming Soon Section */}
-                            {/*<div className="mt-10 bg-gradient-to-r from-lime-400/10 to-lime-500/10 border border-lime-400/20 rounded-xl p-8 text-center">*/}
-                            {/*    <div className="text-4xl mb-4">🚀</div>*/}
-                            {/*    <h3 className="text-2xl font-bold text-white mb-2">More Features Coming Soon!</h3>*/}
-                            {/*    <p className="text-gray-400">*/}
-                            {/*        We're working on exciting new features including live streaming, advanced analytics, video reviews,*/}
-                            {/*        and much more!*/}
-                            {/*    </p>*/}
-                            {/*</div>*/}
                         </div>
                     </div>
                 );

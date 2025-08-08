@@ -154,7 +154,7 @@ const TrainingSchedule: React.FC = () => {
             <div className="w-full max-w-4xl mx-auto">
                 <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-xl p-4 sm:p-6 text-center">
                     <Calendar className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500 mx-auto mb-2 opacity-70" />
-                    <p className="text-white text-sm sm:text-base">No training sessions scheduled.</p>
+                    <p className="text-white text-sm sm:text-base">We re on holiday!!!.</p>
                 </div>
             </div>
         );
