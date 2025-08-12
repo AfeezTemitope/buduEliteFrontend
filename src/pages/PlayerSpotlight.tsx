@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft, Trophy, Star, Award, Target } from 'lucide-react';
 import { usePlayerStore } from "../store/playerStore";
-import { useAuthStore } from "../store";
-import { useNavigate } from "react-router-dom";
 
-const PlayerSpotlight = () => {
+const PlayerSpotlight = ({ onNavigate }: { onNavigate?: (page: string) => void }) => {
     const {
         playerOfTheMonth,
         featuredPlayers,
@@ -14,21 +12,14 @@ const PlayerSpotlight = () => {
         fetchFeaturedPlayers,
     } = usePlayerStore();
 
-    const { isAuthenticated, isLoading: authLoading } = useAuthStore();
-    const navigate = useNavigate();
-
     const [retryCount, setRetryCount] = useState(0);
 
     useEffect(() => {
-        if (!isAuthenticated && !authLoading) {
-            navigate("/login");
-            return;
-        }
-        if (isAuthenticated && retryCount <= 3) {
+        if (retryCount <= 3) {
             fetchPlayerOfTheMonth();
             fetchFeaturedPlayers();
         }
-    }, [isAuthenticated, authLoading, fetchPlayerOfTheMonth, fetchFeaturedPlayers, navigate, retryCount]);
+    }, [fetchPlayerOfTheMonth, fetchFeaturedPlayers, retryCount]);
 
     const handleRefresh = () => {
         setRetryCount((prev) => prev + 1);
@@ -36,7 +27,7 @@ const PlayerSpotlight = () => {
         fetchFeaturedPlayers();
     };
 
-    if (authLoading || loading) {
+    if (loading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black pt-16 sm:pt-20 flex items-center justify-center px-4">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 border-4 border-lime-400 border-t-transparent rounded-full animate-spin"></div>
@@ -52,7 +43,7 @@ const PlayerSpotlight = () => {
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center space-x-2 sm:space-x-4">
                             <button
-                                onClick={() => navigate("/dashboard")}
+                                onClick={() => onNavigate && onNavigate("/dashboard")}
                                 className="p-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors"
                             >
                                 <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -70,7 +61,6 @@ const PlayerSpotlight = () => {
                         </button>
                     </div>
 
-                    {/* Silent error: only show retry if we know it's safe */}
                     {error && retryCount >= 3 && (
                         <div className="text-center py-4">
                             <p className="text-gray-500 text-xs sm:text-sm mb-2">We're having trouble loading player data.</p>
@@ -95,11 +85,10 @@ const PlayerSpotlight = () => {
                         <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                             {/* Image & Info */}
                             <div className="text-center lg:text-left">
-                                <div className="mx-auto lg:mx-0 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-xl overflow-hidden border-4 border-lime-400/30 mb-4">
+                                <div className="mx-auto lg:mx-0 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 rounded-xl overflow-hidden border-4 border-lime-400/30 mb-4">
                                     <img
                                         src={playerOfTheMonth.image || "/placeholder.svg"}
                                         alt={playerOfTheMonth.name}
-                                        loading="lazy"
                                         className="w-full h-full object-cover"
                                         onError={(e) => {
                                             (e.target as HTMLImageElement).src = "/drilldown.png";
@@ -186,7 +175,6 @@ const PlayerSpotlight = () => {
                                             <img
                                                 src={player.image || "/placeholder.svg"}
                                                 alt={player.name}
-                                                loading="lazy"
                                                 className="w-full h-full object-cover"
                                                 onError={(e) => {
                                                     (e.target as HTMLImageElement).src = "/drilldown.png";
@@ -226,7 +214,6 @@ const PlayerSpotlight = () => {
                         </div>
                     )}
                 </div>
-
             </div>
         </div>
     );

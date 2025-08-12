@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
-import { useAuthStore } from './authStore';
-import toast from 'react-hot-toast';
+
 
 interface Player {
     id: number;
@@ -38,45 +37,23 @@ export const usePlayerStore = create<PlayerState>((set) => ({
     error: null,
 
     fetchPlayerOfTheMonth: async () => {
-        const { token } = useAuthStore.getState();
-        if (!token) {
-            toast.error('Please log in to view Player of the Month');
-            set({ loading: false, error: 'Please log in to view Player of the Month' });
-            return;
-        }
         set({ loading: true, error: null });
         try {
-            const response = await axios.get(`${API_BASE_URL}/players/player-of-the-month/`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const response = await axios.get(`${API_BASE_URL}/players/player-of-the-month/`);
             set({ playerOfTheMonth: response.data, loading: false });
         } catch (error: any) {
-            const errorMessage = error.response?.status === 401
-                ? 'Please log in to view Player of the Month'
-                : error.response?.data?.detail || 'Failed to fetch Player of the Month';
-            toast.error(errorMessage);
+            const errorMessage = error.response?.data?.detail || 'Failed to fetch Player of the Month';
             set({ error: errorMessage, loading: false });
         }
     },
 
     fetchFeaturedPlayers: async () => {
-        const { token } = useAuthStore.getState();
-        if (!token) {
-            toast.error('Please log in to view Featured Players');
-            set({ loading: false, error: 'Please log in to view Featured Players' });
-            return;
-        }
         set({ loading: true, error: null });
         try {
-            const response = await axios.get(`${API_BASE_URL}/players/featured-players/`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const response = await axios.get(`${API_BASE_URL}/players/featured-players/`);
             set({ featuredPlayers: response.data, loading: false });
         } catch (error: any) {
-            const errorMessage = error.response?.status === 401
-                ? 'Please log in to view Featured Players'
-                : error.response?.data?.detail || 'Failed to fetch Featured Players';
-            toast.error(errorMessage);
+            const errorMessage = error.response?.data?.detail || 'Failed to fetch Featured Players';
             set({ error: errorMessage, loading: false });
         }
     },

@@ -1,22 +1,19 @@
 import type React from "react";
-import { useState, useEffect } from "react";
-import { useAuthStore } from "../store";
-import { useEcommerceStore } from "../store";
+import { useState } from "react";
+// import { useEcommerceStore } from "../store";
 import DashboardHeader from "../components/layout/DashboardHeader";
-import TrainingSchedule from "../components/dashboard/TrainingSchedule";
-import BefaNews from "./BefaNews";
-import BefaStore from "./BefaStore";
 import PlayerSpotlight from "./PlayerSpotlight";
 import ComingSoon from "./ComingSoon";
+import LandingPage from "./LandingPage.tsx";
+import BefaNews from "./BefaNews.tsx";
 
 const Dashboard: React.FC = () => {
-    useAuthStore();
-    const { fetchCart } = useEcommerceStore();
+    // const { fetchCart } = useEcommerceStore();
     const [currentPage, setCurrentPage] = useState("/dashboard");
 
-    useEffect(() => {
-        fetchCart();
-    }, [fetchCart]);
+    // useEffect(() => {
+    //     fetchCart();
+    // }, [fetchCart]);
 
     const handleNavigate = (page: string) => {
         setCurrentPage(page);
@@ -24,51 +21,59 @@ const Dashboard: React.FC = () => {
 
     const renderPage = () => {
         switch (currentPage) {
-            case "/befa-store":
-                return <BefaStore onNavigate={handleNavigate} />;
+            case "/befa-news":
+                return (
+                    <div className="min-h-screen bg-black text-white pt-20">
+                        <BefaNews onNavigate={handleNavigate} />
+                    </div>
+                );
             case "/player-spotlight":
-                return <PlayerSpotlight onNavigate={handleNavigate} />;
+                return (
+                    <div className="min-h-screen bg-black text-white pt-20">
+                        <PlayerSpotlight onNavigate={handleNavigate} />
+                    </div>
+                );
             case "/live-stream":
                 return (
-                    <ComingSoon
-                        onNavigate={handleNavigate}
-                        title="BEFA Match Live Stream"
-                        description="Watch live matches and tournaments from the BEFA league"
-                        features={[
-                            "Live HD streaming of all BEFA matches",
-                            "Multiple camera angles and replays",
-                            "Real-time match statistics and analytics",
-                            "Interactive live chat with other fans",
-                            "Match highlights and post-game analysis",
-                            "Mobile-optimized viewing experience",
-                        ]}
-                    />
+                    <div className="min-h-screen bg-black text-white pt-20">
+                        <ComingSoon
+                            onNavigate={handleNavigate}
+                            title="BEFA Match Live Stream"
+                            description="Watch live matches and tournaments from the BEFA league"
+                            features={[
+                                "Live HD streaming of all BEFA matches",
+                                "Multiple camera angles and replays",
+                                "Real-time match statistics and analytics",
+                                "Interactive live chat with other fans",
+                                "Match highlights and post-game analysis",
+                                "Mobile-optimized viewing experience",
+                            ]}
+                        />
+                    </div>
                 );
             case "/top5-leagues":
                 return (
-                    <ComingSoon
-                        onNavigate={handleNavigate}
-                        title="Top 5 Leagues Live Stream"
-                        description="Stream matches from the world's top football leagues"
-                        features={[
-                            "Premier League live matches",
-                            "La Liga and Serie A coverage",
-                            "Bundesliga and Ligue 1 streams",
-                            "Champions League and Europa League",
-                            "Match predictions and analysis",
-                            "Player performance tracking",
-                        ]}
-                    />
+                    <div className="min-h-screen bg-black text-white pt-20">
+                        <ComingSoon
+                            onNavigate={handleNavigate}
+                            title="Top 5 Leagues Live Stream"
+                            description="Stream matches from the world's top football leagues"
+                            features={[
+                                "Premier League live matches",
+                                "La Liga and Serie A coverage",
+                                "Bundesliga and Ligue 1 streams",
+                                "Champions League and Europa League",
+                                "Match predictions and analysis",
+                                "Player performance tracking",
+                            ]}
+                        />
+                    </div>
                 );
             default:
                 return (
-                    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black pt-20">
+                    <div className="min-h-screen bg-black text-white pt-20">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                            {/* Stacked Layout: Training Schedule + Football News */}
-                            <div className="flex flex-col space-y-8">
-                                <TrainingSchedule />
-                                <BefaNews />
-                            </div>
+                            <LandingPage />
                         </div>
                     </div>
                 );

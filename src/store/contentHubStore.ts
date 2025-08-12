@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { useAuthStore } from "./authStore";
+import axios from "axios";
 
 interface User {
     id: number;
@@ -26,33 +26,22 @@ interface ContentHubState {
     fetchPosts: () => Promise<void>;
     fetchPost: (postId: number) => Promise<void>;
     likePost: (postId: number) => Promise<void>;
+    sharePost: (postId: number) => Promise<void>;
     setSelectedPost: (post: Post | null) => void;
 }
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:8000/api";
 
-export const useContentHubStore = create<ContentHubState>((set) => ({
+export const useContentHubStore = create<ContentHubState>((set, get) => ({
     posts: [],
     selectedPost: null,
     loading: false,
 
     fetchPosts: async () => {
-        const { token } = useAuthStore.getState();
-        if (!token) return;
-
         set({ loading: true });
         try {
-            const response = await fetch(`${API_BASE_URL}/content-hub/posts/`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!response.ok) throw new Error("Failed to fetch posts");
-
-            const data: Post[] = await response.json();
-            set({ posts: data });
+            const response = await axios.get<Post[]>(`${API_BASE_URL}/content-hub/posts/`);
+            set({ posts: response.data });
         } catch (error) {
             console.error("Error fetching posts:", error);
         } finally {
@@ -61,68 +50,51 @@ export const useContentHubStore = create<ContentHubState>((set) => ({
     },
 
     fetchPost: async (postId: number) => {
-        const { token } = useAuthStore.getState();
-        if (!token) return;
-
         try {
-            const response = await fetch(`${API_BASE_URL}/content-hub/posts/${postId}/`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!response.ok) throw new Error("Failed to fetch post");
-
-            const data: Post = await response.json();
-            set({ selectedPost: data });
+            const response = await axios.get<Post>(`${API_BASE_URL}/content-hub/posts/${postId}/`);
+            set({ selectedPost: response.data });
         } catch (error) {
             console.error("Error fetching post:", error);
         }
     },
 
     likePost: async (postId: number) => {
-        const { token } = useAuthStore.getState();
-        if (!token) return;
-
         try {
-            const response = await fetch(`${API_BASE_URL}/content-hub/posts/${postId}/like/`, {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            const response = await axios.post<{ message: string; post: Post }>(
+                `${API_BASE_URL}/content-hub/posts/${postId}/like/`
+            );
 
-            if (!response.ok) throw new Error("Failed to like post");
+            const updatedPost = response.data.post;
 
-            const data = await response.json();
-
-            // Optimistically update UI
             set((state) => ({
                 posts: state.posts.map((post) =>
-                    post.id === postId
-                        ? {
-                            ...post,
-                            is_liked: data.message === "Like added",
-                            like_count: data.message === "Like added"
-                                ? post.like_count + 1
-                                : Math.max(0, post.like_count - 1),
-                        }
-                        : post
+                    post.id === postId ? { ...post, ...updatedPost } : post
                 ),
-                selectedPost: state.selectedPost?.id === postId
-                    ? {
-                        ...state.selectedPost,
-                        is_liked: data.message === "Like added",
-                        like_count: data.message === "Like added"
-                            ? state.selectedPost.like_count + 1
-                            : Math.max(0, state.selectedPost.like_count - 1),
-                    }
-                    : state.selectedPost,
+                selectedPost:
+                    state.selectedPost?.id === postId ? { ...state.selectedPost, ...updatedPost } : state.selectedPost,
             }));
         } catch (error) {
             console.error("Error liking post:", error);
+        }
+    },
+
+    sharePost: async (postId: number) => {
+        try {
+            const response = await axios.post<{ message: string; post: Post }>(
+                `${API_BASE_URL}/content-hub/posts/${postId}/share/`
+            );
+
+            const updatedPost = response.data.post;
+
+            set((state) => ({
+                posts: state.posts.map((post) =>
+                    post.id === postId ? { ...post, ...updatedPost } : post
+                ),
+                selectedPost:
+                    state.selectedPost?.id === postId ? { ...state.selectedPost, ...updatedPost } : state.selectedPost,
+            }));
+        } catch (error) {
+            console.error("Error sharing post:", error);
         }
     },
 

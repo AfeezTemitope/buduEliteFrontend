@@ -1,26 +1,13 @@
-import { useEffect } from "react"
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import { Toaster } from "react-hot-toast"
-import { useAuthStore } from "./store"
-import LandingPage from "./pages/LandingPage"
-import Dashboard from "./pages/Dashboard"
+import Dashboard from "./pages/Dashboard.tsx";
 
 function App() {
-    const { isAuthenticated, refreshAuthToken } = useAuthStore()
-
-    useEffect(() => {
-        // Try to refresh token on app load if user is authenticated
-        if (isAuthenticated) {
-            refreshAuthToken()
-        }
-    }, [isAuthenticated, refreshAuthToken])
-
     return (
         <Router>
             <div className="App">
                 <Routes>
-                    <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LandingPage />} />
-                    <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" replace />} />
+                    <Route path="/" element={ <Dashboard /> } />
                 </Routes>
 
                 <Toaster
