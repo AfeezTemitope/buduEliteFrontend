@@ -48,7 +48,7 @@ const LandingPage: React.FC = () => {
                             { icon: Trophy, label: "Champions Trained", value: "50+" },
                             { icon: Star, label: "Elite Coaches", value: "3" },
                             { icon: Users, label: "Active Players", value: "100+" },
-                            { icon: Trophy, label: "Years of Excellence", value: "2" },
+                            { icon: Trophy, label: "Year of Excellence", value: "First" },
                         ].map((stat, index) => {
                             const Icon = stat.icon;
                             return (
