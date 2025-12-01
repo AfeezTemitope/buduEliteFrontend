@@ -23,8 +23,8 @@ const News: React.FC = () => {
       const postUrl = `${baseUrl}#post-${post.id}`;
       const shareData = {
         title: `BEFA News - ${post.author.username}`,
-        text: post.description.length > 100 
-          ? `${post.description.substring(0, 100)}...` 
+        text: post.description.length > 100
+          ? `${post.description.substring(0, 100)}...`
           : post.description,
         url: postUrl,
       };
@@ -77,14 +77,18 @@ const News: React.FC = () => {
 
             <img
               src={selectedPost.image_url || "/drilldown.png"}
-              alt={selectedPost.description}
+              alt="Post content"
               className="w-full h-64 object-cover bg-gray-800 rounded-lg mb-4"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = "/drilldown.png";
               }}
             />
 
-            <p className="text-gray-300 mb-6 leading-relaxed">{selectedPost.description}</p>
+            {/* ✅ RENDER SANITIZED HTML HERE */}
+            <div
+              className="text-gray-300 mb-6 leading-relaxed prose prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: selectedPost.description }}
+            />
 
             <button
               onClick={() => handleShare(selectedPost)}
@@ -134,7 +138,7 @@ const News: React.FC = () => {
 
                   <img
                     src={post.image_url || "/drilldown.png"}
-                    alt={post.description}
+                    alt="Post content"
                     className="w-full h-48 object-cover bg-gray-800 rounded-lg"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/drilldown.png";
@@ -143,13 +147,18 @@ const News: React.FC = () => {
                 </div>
 
                 <div className="p-4 pt-2">
-                  <p className="text-gray-300 text-sm line-clamp-3">
-                    {expandedPost === post.id
-                      ? post.description
-                      : post.description.length > 120
-                      ? `${post.description.slice(0, 120)}...`
-                      : post.description}
-                  </p>
+                  {/* ✅ RENDER SANITIZED HTML IN LIST VIEW */}
+                  <div
+                    className="text-gray-300 text-sm"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        expandedPost === post.id
+                          ? post.description
+                          : post.description.length > 300
+                          ? post.description.substring(0, 300) + '…'
+                          : post.description,
+                    }}
+                  />
 
                   <div className="flex items-center justify-between mt-3">
                     <button
@@ -165,7 +174,7 @@ const News: React.FC = () => {
                       </span>
                     </button>
 
-                    {post.description.length > 120 && (
+                    {post.description.length > 300 && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
