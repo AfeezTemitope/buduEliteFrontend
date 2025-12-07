@@ -1,0 +1,23 @@
+{
+  "name": "Budu Elite Football Academy",
+  "short_name": "BEFA",
+  "description": "⚽ Nurturing world-class football talent through elite training, mentorship, and cutting-edge technology.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/drilldown.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/drilldown.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
