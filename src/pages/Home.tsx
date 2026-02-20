@@ -39,10 +39,10 @@ const Home: React.FC = () => {
   }, []);
 
   const stats = [
-    { icon: Trophy, label: "Champions Trained", value: "50+" },
+    { icon: Trophy, label: "Champions Trained", value: "70+" },
     { icon: Star, label: "Elite Coaches", value: "3" },
     { icon: Users, label: "Active Players", value: "100+" },
-    { icon: Trophy, label: "Year of Excellence", value: "First" },
+    // { icon: Trophy, label: "Year of Excellence", value: "First" },
   ];
 
   return (
@@ -152,7 +152,7 @@ const Home: React.FC = () => {
                   <span>Channel</span>
                 </a>
                 <a
-                  href="https://chat.whatsapp.com/your-fan-group-link"
+                  href="https://chat.whatsapp.com/L9YHIQI4uld3AWTbXcLmTP?mode=gi_t"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-3 rounded-lg font-semibold transition-colors duration-200 text-sm sm:text-base"
