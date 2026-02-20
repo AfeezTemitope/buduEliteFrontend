@@ -29,6 +29,13 @@ const Home: React.FC = () => {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
+  
+  useEffect(() => {
+    heroImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   const goToPrev = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
