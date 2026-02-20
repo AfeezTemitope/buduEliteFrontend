@@ -27,7 +27,7 @@ function AppContent() {
         <div className="App min-h-screen bg-black">
             {/* Tournament Banner - Set enabled={false} to disable */}
             <TournamentBanner
-                enabled={true}  // Change too false to hide banner
+                enabled={false}  // Change too false to hide banner
                 showOnce={true}
             />
 
